@@ -6,6 +6,7 @@ let
       BiocManager
       data_table
       dplyr
+      jsonlite
       git2r
       stringr;
   };

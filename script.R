@@ -9,7 +9,7 @@ library(BiocManager)
 # Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
-target_date <- as.POSIXct("2019-05-02 12:00:00")
+target_date <- as.POSIXct("2019-05-03 12:00:00")
 
 # Add difftime with target_data in seconds to then filter
 # on it
@@ -72,18 +72,48 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
 
   writeLines(modified_content, file_path)
 
-  system(paste0("cd ",
-                repo_path,
-                " && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/r-daily/generate-r-packages_escapeName.patch"))
+  # Not needed anymore
+  #system(paste0("cd ",
+  #              repo_path,
+  #              " && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/r-daily/generate-r-packages_escapeName.patch"))
+
+  #system(paste0("cd ",
+  #              repo_path,
+  #              " && git apply generate-r-packages_escapeName.patch"))
 
   system(paste0("cd ",
                 repo_path,
-                " && git apply generate-r-packages_escapeName.patch"))
+                "/pkgs/development/r-modules/ && rm cran-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/cran-packages.json"))
 
   system(paste0("cd ",
                 repo_path,
-                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran >new && mv new cran-packages.nix"))
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran > new && mv new cran-packages.json"))
 
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && rm bioc-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/bioc-packages.json"))
+
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc > new && mv new bioc-packages.json"))
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && rm bioc-annotation-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/bioc-annotation-packages.json"))
+
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc-annotation > new && mv new bioc-annotation-packages.json"))
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && rm bioc-experiment-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/bioc-experiment-packages.json"))
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc-experiment > new && mv new bioc-experiment-packages.json"))
 
   system(paste0("cd ",
                 repo_path,
@@ -92,8 +122,10 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
                 " && git push --force origin ", evercran_target_date))
 
   # Push the new branch to the remote repository
-  push(repo, name = "origin", refspec = paste0("refs/heads/", branch_name))
+  #push(repo, name = "origin", refspec = paste0("refs/heads/", branch_name))
 }
 
 # Example usage:
 # checkout_commit_and_modify_file("2022-01-01")
+
+checkout_commit_and_modify_file(repo_path, target_date, target_commit)
