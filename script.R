@@ -6,6 +6,13 @@ library(dplyr)
 library(parallel)
 library(BiocManager)
 
+set_bioc_version <- function(target_date){
+  dplyr::case_when(
+           #dplyr::between(target_date, )
+           as.POSIXct("2019-05-03 12:00:00")
+         )
+}
+
 # Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
@@ -34,7 +41,6 @@ if (!dir.exists(repo_path)) {
   clone(repo_url, repo_path)
 }
 
-
 # Define the function
 checkout_commit_and_modify_file <- function(repo_path, target_date, target_commit) {
 
@@ -46,15 +52,15 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
 
   system(paste0("cd ",
                 repo_path,
-                "/pkgs/development/r-modules/ && rm generate-r-packages.R && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/generate-r-packages.R"))
+                "/pkgs/development/r-modules/ && rm generate-r-packages.R && wget https://raw.githubusercontent.com/NixOS/nixpkgs/d44a08dd6574bfc8c701fd0bab02a01391a422f3/pkgs/development/r-modules/generate-r-packages.R"))
 
   system(paste0("cd ",
                 repo_path,
                 "/pkgs/development/r-modules/ && rm default.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/default.nix"))
 
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && rm generate-shell.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/generate-shell.nix"))
+#  system(paste0("cd ",
+#                repo_path,
+#                "/pkgs/development/r-modules/ && rm generate-shell.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/generate-shell.nix"))
 
 
   file_path <- file.path(repo_path,
@@ -72,48 +78,18 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
 
   writeLines(modified_content, file_path)
 
-  # Not needed anymore
-  #system(paste0("cd ",
-  #              repo_path,
-  #              " && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/r-daily/generate-r-packages_escapeName.patch"))
-
-  #system(paste0("cd ",
-  #              repo_path,
-  #              " && git apply generate-r-packages_escapeName.patch"))
+  # Needed for old script
+  system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix_generate-r-default.patch"))
 
   system(paste0("cd ",
                 repo_path,
-                "/pkgs/development/r-modules/ && rm cran-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/cran-packages.json"))
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran > new && mv new cran-packages.nix"))
 
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran > new && mv new cran-packages.json"))
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && rm bioc-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/bioc-packages.json"))
-
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc > new && mv new bioc-packages.json"))
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && rm bioc-annotation-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/bioc-annotation-packages.json"))
-
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc-annotation > new && mv new bioc-annotation-packages.json"))
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && rm bioc-experiment-packages.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/r-modules/bioc-experiment-packages.json"))
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc-experiment > new && mv new bioc-experiment-packages.json"))
+  # TODO: set the correct bioc version by date
+  # TODO: set the correct R version by date
+  # TODO: set the correct quarto version by date
 
   system(paste0("cd ",
                 repo_path,
