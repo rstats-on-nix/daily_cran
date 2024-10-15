@@ -1,0 +1,19 @@
+diff --git a/pkgs/development/r-modules/generate-r-packages.R b/pkgs/development/r-modules/generate-r-packages.R
+index 2fb0a36f44a3..500195c71746 100644
+--- a/pkgs/development/r-modules/generate-r-packages.R
++++ b/pkgs/development/r-modules/generate-r-packages.R
+@@ -4,13 +4,7 @@ library(parallel)
+ library(BiocManager)
+ cl <- makeCluster(4)
+ 
+-biocVersion <- BiocManager:::.version_map()
+-biocVersion <- biocVersion[biocVersion$R == getRversion()[, 1:2],c("Bioc", "BiocStatus")]
+-if ("release" %in% biocVersion$BiocStatus) {
+-  biocVersion <-  as.numeric(as.character(biocVersion[biocVersion$BiocStatus == "release", "Bioc"]))
+-} else {
+-  biocVersion <-  max(as.numeric(as.character(biocVersion$Bioc)))
+-}
++biocVersion <- REPLACE_BIOC_VERSION
+ 
+ mirrorUrls <- list( bioc=paste0("http://bioconductor.org/packages/", biocVersion, "/bioc/src/contrib/")
+                   , "bioc-annotation"=paste0("http://bioconductor.org/packages/", biocVersion, "/data/annotation/src/contrib/")

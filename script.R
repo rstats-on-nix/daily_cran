@@ -7,20 +7,33 @@ library(parallel)
 library(BiocManager)
 
 bioc_versions <- read.csv("bioc_versions.csv")
+r_versions <- read.csv("r_versions.csv")
 
 set_bioc_version <- function(target_date, bioc_versions){
-  bioc_versions %>%  
-    dplyr::filter(date, )
-  dplyr::case_when(
-           #dplyr::between(target_date, )
-           as.POSIXct("2019-05-06 12:00:00")
-         )
+  bioc_versions |>
+    dplyr::arrange(desc(date)) |>
+    dplyr::mutate(date = as.POSIXct(date)) |>
+    dplyr::filter(target_date >= date) |>
+    head(1) |>
+    dplyr::pull(bioc_version)
 }
 
-# Get commit from target date
+set_r_version <- function(target_date, r_versions){
+  r_versions |>
+    dplyr::arrange(desc(date)) |>
+    dplyr::mutate(date = as.POSIXct(date)) |>
+    dplyr::filter(target_date >= date) |>
+    head(1) |>
+    dplyr::pull(r_version)
+}
+
+                                        # Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
-target_date <- as.POSIXct("2019-05-07 12:00:00")
+target_date <- as.POSIXct("2021-01-01 12:00:00")
+
+bioc_version <- set_bioc_version(target_date, bioc_versions)
+r_version <- set_r_version(target_date, r_versions)
 
 # Add difftime with target_data in seconds to then filter
 # on it
@@ -88,10 +101,32 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
                 repo_path,
                 " && git apply ../daily_cran/fix_generate-r-default.patch"))
 
+  # Change bioc version depending on date
+  system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix_bioc_version.patch"))
+
+  system(paste0("cd ",
+                repo_path,
+                paste0("/pkgs/development/r-modules/ && sed -i 's/REPLACE_BIOC_VERSION/\"", bioc_version, "\"/g' generate-r-packages.R")))
+
+
   # Bump the tree
   system(paste0("cd ",
                 repo_path,
                 "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran > new && mv new cran-packages.nix"))
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc > new && mv new bioc-packages.nix"))
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc-annotation > new && mv new bioc-annotation-packages.nix"))
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc-experiment > new && mv new bioc-experiment-packages.nix"))
 
   # .dev attribute from dependencies needs to be removed because it wasn't always
   # used
@@ -117,10 +152,15 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
                 "sed -i '/r_import.*name=\"r_import\"/d' cran-packages.nix")
                 )
 
+  # Get correct version of R for that day. It should be the same as the
+  # one in nixpkgs at that time most of the time
+  system(paste0("cp r_versions/", r_version, ".nix ",
+                repo_path,
+                "/pkgs/applications/science/math/R/default.nix"
+                ))
 
-  # TODO: set the correct bioc version by date
-  # TODO: set the correct R version by date
   # TODO: set the correct quarto version by date
+  # TODO: set the correct rstudio version by date
 
   system(paste0("cd ",
                 repo_path,
