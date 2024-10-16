@@ -1,5 +1,5 @@
 # .github/workflows/push-trigger.yml
-name: Trigger Workflow in Another Repo with Data
+name: Trigger Workflow in Another Repo with Date
 
 on:
   push:

@@ -27,10 +27,10 @@ set_r_version <- function(target_date, r_versions){
     dplyr::pull(r_version)
 }
 
-                                        # Get commit from target date
+# Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
-target_date <- as.POSIXct("2021-01-01 12:00:00")
+target_date <- as.POSIXct("2022-01-01 12:00:00")
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 r_version <- set_r_version(target_date, r_versions)
@@ -130,9 +130,9 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
 
   # .dev attribute from dependencies needs to be removed because it wasn't always
   # used
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && sed -i 's/\\.dev / /g' default.nix"))
+#  system(paste0("cd ",
+#                repo_path,
+#                "/pkgs/development/r-modules/ && sed -i 's/\\.dev / /g' default.nix"))
 
   # Replace mirrors from the deriveCran function in default.nix. Otherwise, packages cannot
   # be downloaded from the archive
@@ -158,6 +158,19 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
                 repo_path,
                 "/pkgs/applications/science/math/R/default.nix"
                 ))
+
+  # Put the GA workflow file in there to build on build_tree repo
+  system(paste0("cp trigger_build.yml ",
+                repo_path,
+                "/.github/workflows/"
+                ))
+
+  # Update date in trigger_build.yml
+  system(paste0("cd ",
+                repo_path,
+                "/.github/workflows/ && ",
+                paste0("sed -i 's|REPLACE_DATE|", target_date, "|g' trigger_build.yml"))
+                )
 
   # TODO: set the correct quarto version by date
   # TODO: set the correct rstudio version by date
