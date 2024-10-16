@@ -4,7 +4,7 @@ name: Trigger Workflow in Another Repo with Data
 on:
   push:
     branches:
-      - main
+      - REPLACE_DATE
 
 jobs:
   trigger-other-repo-workflow:
