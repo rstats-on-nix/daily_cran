@@ -30,7 +30,9 @@ set_r_version <- function(target_date, r_versions){
 # Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
-target_date <- as.POSIXct("2022-01-01 12:00:00")
+target_date <- as.POSIXct("2022-01-16 12:00:00")
+
+previous_date <- "2022-01-01"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 r_version <- set_r_version(target_date, r_versions)
@@ -59,7 +61,7 @@ if (!dir.exists(repo_path)) {
 }
 
 # Define the function
-checkout_commit_and_modify_file <- function(repo_path, target_date, target_commit) {
+checkout_commit_and_modify_file <- function(repo_path, target_date, previous_date, target_commit) {
 
   repo <- repository(repo_path)
 
@@ -111,6 +113,85 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
                 paste0("/pkgs/development/r-modules/ && sed -i 's/REPLACE_BIOC_VERSION/\"", bioc_version, "\"/g' generate-r-packages.R")))
 
 
+  # Replace mirrors from the deriveCran function in default.nix. Otherwise, packages cannot
+  # be downloaded from the archive
+
+  # Replace "mirror://cran/" with the new URL in a file using sed
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && ",
+                paste0("sed -i 's|mirror://cran/|", new_string, "|g' default.nix")
+                ))
+
+  # We need this patch until 2023-02-23
+  if(as.Date(target_date) < as.Date("2023-02-23")){
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-data_table.patch"
+                ))
+  }
+
+  # Fix libiconv deps for Darwin
+  if(as.Date(target_date) < as.Date("2023-02-06")){
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/3f5c9df6511c5e9ed4a6e5242be74bce12b18533/pkgs/development/r-modules/generic-builder.nix"))
+
+  }
+
+  # Get latest mkSheel to make it buildable
+  if(as.Date(target_date) < as.Date("2023-11-24")){
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/0530d6bd0498e6f554cc9070a163ac9aec5819c8/pkgs/build-support/mkshell/default.nix"))
+
+  }
+
+  # Fixes nlme on aarch64-darwin
+  # see https://github.com/NixOS/nixpkgs/pull/151983
+  if(as.Date(target_date) < as.Date("2022-07-30")){
+
+  system(paste0("cd ",
+                repo_path,
+                " && curl https://github.com/NixOS/nixpkgs/commit/2cc754a7baa72659430ec961608f0fc1dbe128df.patch | git apply"))
+
+  }
+
+  # TODO: maybe need to remove "env" from textshaping
+  # TODO: Fix lerc deps for Darwin before 2022-10-29
+
+  if(as.Date(target_date) < as.Date("2022-10-29")){
+
+  system(paste0("cd ",
+                repo_path,
+                " && curl https://github.com/NixOS/nixpkgs/commit/b3f94fd518d6004e497b717e5466da046fb5a6e1.patch | git apply"))
+
+  }
+
+  # Download previous file to make bumping faster
+
+  system(paste0("cd ",
+                repo_path,
+                paste0("/pkgs/development/r-modules/ && rm bioc-annotation-packages.nix && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/refs/heads/",
+                       previous_date, "/pkgs/development/r-modules/bioc-annotation-packages.nix")))
+
+  system(paste0("cd ",
+                repo_path,
+                paste0("/pkgs/development/r-modules/ && rm bioc-experiment-packages.nix && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/refs/heads/",
+                       previous_date, "/pkgs/development/r-modules/bioc-experiment-packages.nix")))
+
+  system(paste0("cd ",
+                repo_path,
+                paste0("/pkgs/development/r-modules/ && rm bioc-packages.nix && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/refs/heads/",
+                       previous_date, "/pkgs/development/r-modules/bioc-packages.nix")))
+
+  system(paste0("cd ",
+                repo_path,
+                paste0("/pkgs/development/r-modules/ && rm cran-packages.nix && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/refs/heads/",
+                       previous_date, "/pkgs/development/r-modules/cran-packages.nix")))
+
   # Bump the tree
   system(paste0("cd ",
                 repo_path,
@@ -134,15 +215,7 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
 #                repo_path,
 #                "/pkgs/development/r-modules/ && sed -i 's/\\.dev / /g' default.nix"))
 
-  # Replace mirrors from the deriveCran function in default.nix. Otherwise, packages cannot
-  # be downloaded from the archive
-
-  # Replace "mirror://cran/" with the new URL in a file using sed
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && ",
-                paste0("sed -i 's|mirror://cran/|", new_string, "|g' default.nix")
-                ))
+    
 
   # For some reason r_import is defined twice, but the one where
   # name = r_import is wrong so let's get rid of that
@@ -188,4 +261,4 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, target_commi
 # Example usage:
 # checkout_commit_and_modify_file("2022-01-01")
 
-checkout_commit_and_modify_file(repo_path, target_date, target_commit)
+checkout_commit_and_modify_file(repo_path, target_date, previous_date, target_commit)
