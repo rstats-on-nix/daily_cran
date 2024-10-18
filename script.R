@@ -34,7 +34,7 @@ target_date <- as.POSIXct("2022-01-16 12:00:00")
 
 #commit_date <- as.POSIXct("2024-01-01 12:00:00")
 
-previous_date <- "2022-01-01"
+previous_date <- "2022-01-16"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 r_version <- set_r_version(target_date, r_versions)
@@ -131,6 +131,14 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                 repo_path,
                 " && git apply ../daily_cran/fix-data_table.patch"
                 ))
+  }
+
+
+  # replace-fail only showed up starting 15th of January 2024
+  if(as.Date(target_date) < as.Date("2024-01-16")){
+    system(paste0("cd ",
+                  repo_path,
+                  paste0("/pkgs/development/r-modules/ && sed -i 's/replace-fail/replace/g' default.nix")))
   }
 
   # We need this patch until 2023-02-23
