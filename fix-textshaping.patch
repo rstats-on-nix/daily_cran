@@ -1,0 +1,13 @@
+diff --git a/pkgs/development/r-modules/default.nix b/pkgs/development/r-modules/default.nix
+index 864ea018b2ee..e12527dbbe35 100644
+--- a/pkgs/development/r-modules/default.nix
++++ b/pkgs/development/r-modules/default.nix
+@@ -1797,7 +1797,7 @@ let
+     });
+ 
+     textshaping = old.textshaping.overrideAttrs (attrs: {
+-      env.NIX_LDFLAGS = "-lfribidi -lharfbuzz";
++      NIX_LDFLAGS = "-lfribidi -lharfbuzz";
+     });
+ 
+     httpuv = old.httpuv.overrideAttrs (_: {

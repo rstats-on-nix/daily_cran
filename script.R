@@ -32,6 +32,8 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 
 target_date <- as.POSIXct("2022-01-16 12:00:00")
 
+#commit_date <- as.POSIXct("2024-01-01 12:00:00")
+
 previous_date <- "2022-01-01"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
@@ -131,44 +133,52 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                 ))
   }
 
+  # We need this patch until 2023-02-23
+  if(as.Date(target_date) < as.Date("2023-04-27")){
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-textshaping.patch"
+                ))
+  }
+
   # Fix libiconv deps for Darwin
-  if(as.Date(target_date) < as.Date("2023-02-06")){
+#  if(as.Date(target_date) < as.Date("2023-02-06")){
+#
+#  system(paste0("cd ",
+#                repo_path,
+#                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/3f5c9df6511c5e9ed4a6e5242be74bce12b18533/pkgs/development/r-modules/generic-builder.nix"))
+#
+#  }
 
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/3f5c9df6511c5e9ed4a6e5242be74bce12b18533/pkgs/development/r-modules/generic-builder.nix"))
+  # Get latest mkShell to make it buildable
+  #if(as.Date(target_date) < as.Date("2023-11-24")){
 
-  }
+  #system(paste0("cd ",
+  #              repo_path,
+  #              "/pkgs/build-support/mkshell/ && rm default.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/0530d6bd0498e6f554cc9070a163ac9aec5819c8/pkgs/build-support/mkshell/default.nix"))
 
-  # Get latest mkSheel to make it buildable
-  if(as.Date(target_date) < as.Date("2023-11-24")){
-
-  system(paste0("cd ",
-                repo_path,
-                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/0530d6bd0498e6f554cc9070a163ac9aec5819c8/pkgs/build-support/mkshell/default.nix"))
-
-  }
+  #}
 
   # Fixes nlme on aarch64-darwin
   # see https://github.com/NixOS/nixpkgs/pull/151983
-  if(as.Date(target_date) < as.Date("2022-07-30")){
-
-  system(paste0("cd ",
-                repo_path,
-                " && curl https://github.com/NixOS/nixpkgs/commit/2cc754a7baa72659430ec961608f0fc1dbe128df.patch | git apply"))
-
-  }
+#  if(as.Date(target_date) < as.Date("2022-07-30")){
+#
+#  system(paste0("cd ",
+#                repo_path,
+#                " && curl https://github.com/NixOS/nixpkgs/commit/2cc754a7baa72659430ec961608f0fc1dbe128df.patch | git apply"))
+#
+#  }
 
   # TODO: maybe need to remove "env" from textshaping
-  # TODO: Fix lerc deps for Darwin before 2022-10-29
 
-  if(as.Date(target_date) < as.Date("2022-10-29")){
-
-  system(paste0("cd ",
-                repo_path,
-                " && curl https://github.com/NixOS/nixpkgs/commit/b3f94fd518d6004e497b717e5466da046fb5a6e1.patch | git apply"))
-
-  }
+  # Fix lerc deps for Darwin before 2022-10-29
+#  if(as.Date(target_date) < as.Date("2022-10-29")){
+#
+#  system(paste0("cd ",
+#                repo_path,
+#                " && curl https://github.com/NixOS/nixpkgs/commit/b3f94fd518d6004e497b717e5466da046fb5a6e1.patch | git apply"))
+#
+#  }
 
   # Download previous file to make bumping faster
 
