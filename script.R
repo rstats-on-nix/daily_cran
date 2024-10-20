@@ -32,7 +32,8 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 
 target_date <- as.POSIXct("2022-01-16 12:00:00")
 
-#commit_date <- as.POSIXct("2024-01-01 12:00:00")
+# rJava works on darwin for this commit
+commit_date <- as.POSIXct("2022-05-22 12:00:00")
 
 previous_date <- "2022-01-16"
 
@@ -42,7 +43,7 @@ r_version <- set_r_version(target_date, r_versions)
 # Add difftime with target_data in seconds to then filter
 # on it
 nixpkgs_commits[,
-                diff := difftime(when, target_date, units = "secs")]
+                diff := difftime(when, commit_date, units = "secs")]
 
 closest_commit_df <- nixpkgs_commits[
                                   diff >= 0
@@ -150,46 +151,44 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
   }
 
   # Fix libiconv deps for Darwin
-#  if(as.Date(target_date) < as.Date("2023-02-06")){
-#
-#  system(paste0("cd ",
-#                repo_path,
-#                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/3f5c9df6511c5e9ed4a6e5242be74bce12b18533/pkgs/development/r-modules/generic-builder.nix"))
-#
-#  }
+  if(as.Date(target_date) < as.Date("2023-02-06")){
+
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && rm generic-builder.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/3f5c9df6511c5e9ed4a6e5242be74bce12b18533/pkgs/development/r-modules/generic-builder.nix"))
+
+  }
 
   # Get latest mkShell to make it buildable
-  #if(as.Date(target_date) < as.Date("2023-11-24")){
+  if(as.Date(target_date) < as.Date("2023-11-24")){
 
-  #system(paste0("cd ",
-  #              repo_path,
-  #              "/pkgs/build-support/mkshell/ && rm default.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/0530d6bd0498e6f554cc9070a163ac9aec5819c8/pkgs/build-support/mkshell/default.nix"))
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/build-support/mkshell/ && rm default.nix && wget https://raw.githubusercontent.com/NixOS/nixpkgs/0530d6bd0498e6f554cc9070a163ac9aec5819c8/pkgs/build-support/mkshell/default.nix"))
 
-  #}
+  }
 
   # Fixes nlme on aarch64-darwin
   # see https://github.com/NixOS/nixpkgs/pull/151983
-#  if(as.Date(target_date) < as.Date("2022-07-30")){
-#
-#  system(paste0("cd ",
-#                repo_path,
-#                " && curl https://github.com/NixOS/nixpkgs/commit/2cc754a7baa72659430ec961608f0fc1dbe128df.patch | git apply"))
-#
-#  }
+  # fix is from here https://github.com/NixOS/nixpkgs/pull/186477
+  if(as.Date(target_date) < as.Date("2022-08-16")){
 
-  # TODO: maybe need to remove "env" from textshaping
+  system(paste0("cd ",
+                repo_path,
+                " && curl https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/186477.patch | git apply"))
+
+  }
 
   # Fix lerc deps for Darwin before 2022-10-29
-#  if(as.Date(target_date) < as.Date("2022-10-29")){
-#
-#  system(paste0("cd ",
-#                repo_path,
-#                " && curl https://github.com/NixOS/nixpkgs/commit/b3f94fd518d6004e497b717e5466da046fb5a6e1.patch | git apply"))
-#
-#  }
+  if(as.Date(target_date) < as.Date("2022-10-29")){
+
+  system(paste0("cd ",
+                repo_path,
+                " && curl https://github.com/NixOS/nixpkgs/commit/b3f94fd518d6004e497b717e5466da046fb5a6e1.patch | git apply"))
+
+  }
 
   # Download previous file to make bumping faster
-
   system(paste0("cd ",
                 repo_path,
                 paste0("/pkgs/development/r-modules/ && rm bioc-annotation-packages.nix && wget https://raw.githubusercontent.com/rstats-on-nix/nixpkgs/refs/heads/",
@@ -229,11 +228,9 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
 
   # .dev attribute from dependencies needs to be removed because it wasn't always
   # used
-#  system(paste0("cd ",
-#                repo_path,
-#                "/pkgs/development/r-modules/ && sed -i 's/\\.dev / /g' default.nix"))
-
-    
+  system(paste0("cd ",
+                repo_path,
+                "/pkgs/development/r-modules/ && sed -i 's/\\.dev / /g' default.nix"))
 
   # For some reason r_import is defined twice, but the one where
   # name = r_import is wrong so let's get rid of that
@@ -272,8 +269,6 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                 " && git add . && git commit -m 'R CRAN update'",
                 " && git push --force origin ", target_date))
 
-  # Push the new branch to the remote repository
-  #push(repo, name = "origin", refspec = paste0("refs/heads/", branch_name))
 }
 
 # Example usage:

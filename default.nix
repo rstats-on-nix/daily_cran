@@ -4,10 +4,12 @@ let
   rpkgs = builtins.attrValues {
     inherit (pkgs.rPackages) 
       BiocManager
+      arrow
       data_table
       dplyr
       jsonlite
       git2r
+      versions
       stringr;
   };
   
