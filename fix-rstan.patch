@@ -1,0 +1,15 @@
+  diff --git a/pkgs/development/r-modules/default.nix b/pkgs/development/r-modules/default.nix
+index 3bda171fd1c1..ec869552fc62 100644
+--- a/pkgs/development/r-modules/default.nix
++++ b/pkgs/development/r-modules/default.nix
+@@ -1550,9 +1550,7 @@ let
+     });
+ 
+     rstan = old.rstan.overrideAttrs (attrs: {
+-      env = (attrs.env or { }) // {
+-        NIX_CFLAGS_COMPILE = attrs.env.NIX_CFLAGS_COMPILE + " -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION";
+-      };
++        NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE + " -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION";
+     });
+ 
+     mongolite = old.mongolite.overrideAttrs (attrs: {

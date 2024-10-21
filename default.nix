@@ -10,6 +10,8 @@ let
       jsonlite
       git2r
       versions
+      rvest
+      lubridate
       stringr;
   };
   

@@ -1,0 +1,13 @@
+diff --git a/pkgs/development/r-modules/default.nix b/pkgs/development/r-modules/default.nix
+index 61536068bbc3..0d7f038f2575 100644
+--- a/pkgs/development/r-modules/default.nix
++++ b/pkgs/development/r-modules/default.nix
+@@ -322,7 +322,7 @@ let
+     adimpro = [ pkgs.imagemagick ];
+     animation = [ pkgs.which ];
+     Apollonius = with pkgs; [ pkg-config gmp mpfr ];
+-    arrow = with pkgs; [ pkg-config cmake ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ intltool ];
++    arrow = with pkgs; [ pkg-config rPackages.cpp11 cmake ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ intltool ];
+     audio = [ pkgs.portaudio ];
+     BayesSAE = [ pkgs.gsl ];
+     BayesVarSel = [ pkgs.gsl ];

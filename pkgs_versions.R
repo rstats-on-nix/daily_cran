@@ -1,117 +1,79 @@
-# Taken from {versions}
-available.versions <- function (pkgs){
-    if (length(pkgs) > 1) {
-        ans <- lapply(pkgs, available.versions)
-        ans <- lapply(ans, "[[", 1)
-        names(ans) <- pkgs
-        return(ans)
-    }
-    current_df <- current.version(pkgs)
-    archive_url <- sprintf("%s/src/contrib/Archive",
-                           "https://packagemanager.posit.co/cran/latest")
+library(rvest)
+library(dplyr)
 
-    archived <- pkg.in.archive(archive_url, pkgs)
-    if (archived) {
-        pkg_archive_url <- sprintf("%s/src/contrib/Archive/%s", 
-                                   "https://packagemanager.posit.co/cran/latest", pkgs)
-        previous_df <- scrape.index.versions(pkg_archive_url, 
-            pkgs)
-    }
-    else {
-        previous_df <- current_df[0, ]
-    }
-    df <- rbind(current_df, previous_df)
-    df$available <- as.Date(df$date) >= as.Date("2014-09-17")
-    if (!all(df$available)) {
-        first_available <- min(which(as.Date(df$date) <= as.Date("2014-09-17")))
-        df$available[first_available] <- TRUE
-    }
-    ans <- list()
-    ans[[pkgs]] <- df
-    return(ans)
-}
+get_versions <- function(url){
 
-current.version <- function (pkg) {
+  webpage <- read_html(url)
 
-  # get all current contributed packages in latest MRAN
-  url <- paste0("https://packagemanager.posit.co/cran/latest",
-                '/src/contrib')
+  pkg_archive <- webpage %>%
+    html_table() %>%
+    .[[1]]
 
-  # get the lines
-  lines <- url_lines(url)
+  colnames(pkg_archive) <- c("a", "name", "last_modified", "size", "description")
 
-  # keep only lines starting with hrefs
-  lines <- grep('^<a href="*',
-                lines,
-                value = TRUE)
-
-  # take the sequence after the href that is between the quotes
-  tarballs <- gsub('.*href=\"([^\"]+)\".*',
-                   '\\1',
-                   lines)
-
-  # match the sequence in number-letter-number format
-  dates <- gsub('.*  ([0-9]+-[a-zA-Z]+-[0-9]+) .*',
-                '\\1',
-                lines)
-
-  # convert dates to standard format
-  dates <- as.Date(dates, format = '%d-%b-%Y')
-
-  # get the ones matching the package
-  idx <- grep(sprintf('^%s_.*.tar.gz$', pkg),
-              tarballs)
-
-  if (length(idx) == 1) {
-    # if this provided exactly one match, it's the current package
-    # so scrape the version and get the date
-
-    versions <- tarballs[idx]
-
-    # remove the leading package name
-    versions <- gsub(sprintf('^%s_', pkg),
-                     '',
-                     versions)
-
-    # remove the trailing tarball extension
-    versions <- gsub('.tar.gz$',
-                     '',
-                     versions)
-
-    dates <- dates[idx]
-
-  } else {
-
-    # otherwise return NAs
-    versions <- dates <- NA
-
-  }
-
-  # return dataframe with these
-  data.frame(version = versions,
-             date = as.character(dates),
-             stringsAsFactors = FALSE)
+  pkg_archive %>%
+    filter(last_modified != "") %>%
+    select(name, last_modified) %>%
+    mutate(hu = as.Date(last_modified)) %>%
+    filter(hu > as.Date("2022-01-16"))
 
 }
 
-url_lines <- function (url) {
+dplyr_url <- "https://cran.r-project.org/src/contrib/Archive/dplyr/"
 
-                                        # create a tempfile
-  file <- tempfile()
+dplyr_versions <- get_versions(dplyr_url)
 
-                                        # stick the html in there
-  suppressWarnings(success <- download.file(url, file,
-                                            quiet = TRUE))
+duckdb_url <- "https://cran.r-project.org/src/contrib/Archive/duckdb/"
 
-                                        # if it failed, issue a nice error
-  if (success != 0)
-    stop ('URL does not appear to exist: ', url)
+duckdb_versions <- get_versions(duckdb_url)
 
-                                        # get the lines, delete the file and return
-  lines <- readLines(file, encoding = "UTF-8")
-  file.remove(file)
-  lines
+data.table_url <- "https://cran.r-project.org/src/contrib/Archive/data.table/"
 
-}
+data.table_versions <- get_versions(data.table_url)
 
-available.versions("dplyr")
+arrow_url <- "https://cran.r-project.org/src/contrib/Archive/arrow/"
+
+arrow_versions <- get_versions(arrow_url)
+
+sf_url <- "https://cran.r-project.org/src/contrib/Archive/sf/"
+
+sf_versions <- get_versions(sf_url)
+
+rJava_url <- "https://cran.r-project.org/src/contrib/Archive/rJava/"
+
+rJava_versions <- get_versions(rJava_url)
+
+rstan_url <- "https://cran.r-project.org/src/contrib/Archive/rstan/"
+
+rstan_versions <- get_versions(rstan_url)
+
+RCurl_url <- "https://cran.r-project.org/src/contrib/Archive/RCurl/"
+
+RCurl_versions <- get_versions(RCurl_url)
+
+RSQLite_url <- "https://cran.r-project.org/src/contrib/Archive/RSQLite/"
+
+RSQLite_versions <- get_versions(RSQLite_url)
+
+stringi_url <- "https://cran.r-project.org/src/contrib/Archive/stringi/"
+
+stringi_versions <- get_versions(stringi_url)
+
+bind_rows(
+  dplyr_versions,
+  duckdb_versions,
+  data.table_versions,
+  arrow_versions,
+  sf_versions,
+  rJava_versions,
+  rstan_versions,
+  RCurl_versions,
+  RSQLite_versions,
+  stringi_versions
+) %>%
+  arrange(last_modified) %>%
+  mutate(month = lubridate::month(hu), .before = name) %>%
+  group_by(month) %>%
+  mutate(pkg_name = sub("_.*", "", name), .before = name,
+         dup = ifelse(duplicated(pkg_name), 1, 0)) %>%
+  print(n=120)

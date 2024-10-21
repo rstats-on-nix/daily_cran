@@ -30,12 +30,23 @@ set_r_version <- function(target_date, r_versions){
 # Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
+# the next one should be before april 20th 22
+# the next one should be on the 22nd of june 22
+# the next one should be on the 20th of october 22
+# the next one should be on the 13th of february 23
+# the next one should be on the 1st of april 23
+# the next one should be on the 15th of june 23
+# the next one should be on the 30th of october 23
+# the next one should be on the 30th of december 23
+# the next one should be on the 29th of february 24
+# the next one should be on the 29th of april 24
+# the next one should be on the 14th of june 24
 target_date <- as.POSIXct("2022-01-16 12:00:00")
 
 # rJava works on darwin for this commit
 commit_date <- as.POSIXct("2022-05-22 12:00:00")
 
-previous_date <- "2022-01-16"
+previous_date <- "2022-01-01"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 r_version <- set_r_version(target_date, r_versions)
@@ -142,11 +153,26 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                   paste0("/pkgs/development/r-modules/ && sed -i 's/replace-fail/replace/g' default.nix")))
   }
 
+  # arrow needs rPackages.cpp11
+  if(as.Date(target_date) < as.Date("2023-04-27")){
+    system(paste0("cd ",
+                  repo_path,
+                  " && git apply ../daily_cran/fix-arrow.patch"
+                  ))
+  }
+                                        # We need this patch until 2023-04-27
+  if(as.Date(target_date) < as.Date("2023-04-27")){
+    system(paste0("cd ",
+                  repo_path,
+                  " && git apply ../daily_cran/fix-textshaping.patch"
+                  ))
+  }
+
   # We need this patch until 2023-02-23
   if(as.Date(target_date) < as.Date("2023-04-27")){
     system(paste0("cd ",
                 repo_path,
-                " && git apply ../daily_cran/fix-textshaping.patch"
+                " && git apply ../daily_cran/fix-rstan.patch"
                 ))
   }
 
