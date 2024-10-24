@@ -32,10 +32,13 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 
 # the next one should be before april 20th 22
 # the next one should be on the 22nd of june 22
+# the next one should be on the 22nd of august 22
 # the next one should be on the 20th of october 22
+# the next one should be on the 20th of december 22
 # the next one should be on the 13th of february 23
 # the next one should be on the 1st of april 23
 # the next one should be on the 15th of june 23
+# the next one should be on the 15th of august 23
 # the next one should be on the 30th of october 23
 # the next one should be on the 30th of december 23
 # the next one should be on the 29th of february 24
@@ -43,8 +46,8 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 # the next one should be on the 14th of june 24
 target_date <- as.POSIXct("2022-01-16 12:00:00")
 
-# rJava works on darwin for this commit
-commit_date <- as.POSIXct("2022-05-22 12:00:00")
+# rJava and gdal (??) work on darwin for this commit
+commit_date <- as.POSIXct("2022-11-01 12:00:00")
 
 previous_date <- "2022-01-01"
 
@@ -143,6 +146,31 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                 repo_path,
                 " && git apply ../daily_cran/fix-data_table.patch"
                 ))
+
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-xlst.patch"
+                ))
+
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-ModelMetrics.patch"
+                ))
+
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-FlexReg.patch"
+                ))
+
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-networkscaleup.patch"
+                ))
+
+    system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-OpenMx.patch"
+                ))
   }
 
 
@@ -160,7 +188,8 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                   " && git apply ../daily_cran/fix-arrow.patch"
                   ))
   }
-                                        # We need this patch until 2023-04-27
+
+  # We need this patch until 2023-04-27
   if(as.Date(target_date) < as.Date("2023-04-27")){
     system(paste0("cd ",
                   repo_path,
@@ -175,6 +204,12 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                 " && git apply ../daily_cran/fix-rstan.patch"
                 ))
   }
+
+  # Fix later on darwin
+  system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-later.patch"))
+
 
   # Fix libiconv deps for Darwin
   if(as.Date(target_date) < as.Date("2023-02-06")){
@@ -286,6 +321,7 @@ checkout_commit_and_modify_file <- function(repo_path, target_date, previous_dat
                 paste0("sed -i 's|REPLACE_DATE|", target_date, "|g' trigger_build.yml"))
                 )
 
+  
   # TODO: set the correct quarto version by date
   # TODO: set the correct rstudio version by date
 

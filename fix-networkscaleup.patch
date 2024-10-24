@@ -1,0 +1,18 @@
+diff --git a/pkgs/development/r-modules/default.nix b/pkgs/development/r-modules/default.nix
+index 0f9b25afe2eb..2cc35f8316f0 100644
+--- a/pkgs/development/r-modules/default.nix
++++ b/pkgs/development/r-modules/default.nix
+@@ -1446,11 +1444,9 @@ let
+       TCLLIBPATH = "${pkgs.bwidget}/lib/bwidget${pkgs.bwidget.version}";
+     });
+ 
+-    networkscaleup = old.networkscaleup.overrideAttrs (attrs: {
+-      env = (attrs.env or { }) // {
++    networkscaleup = old.networkscaleup.overrideDerivation (attrs: {
+         # needed to avoid "log limit exceeded" on Hydra
+-        NIX_CFLAGS_COMPILE = attrs.env.NIX_CFLAGS_COMPILE + " -Wno-ignored-attributes";
+-      };
++        NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE + " -Wno-ignored-attributes";
+ 
+       # consumes a lot of resources in parallel
+       enableParallelBuilding = false;
