@@ -143,6 +143,13 @@ system(paste0("cd ",
               " && git apply ../daily_cran/fix-lwgeom.patch"
               ))
 
+
+# Fix ragg for darwin by adding libdeflate
+system(paste0("cd ",
+              repo_path,
+              " && git apply ../daily_cran/fix-ragg.patch"
+              ))
+
 # We need this patch until 2023-02-23
 if(as.Date(commit_date) < as.Date("2023-02-23")){
   system(paste0("cd ",
