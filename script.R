@@ -41,9 +41,10 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 # the next one should be on the 14th of june 24
 target_date <- as.POSIXct("2023-02-13 12:00:00")
 
-commit_date <- as.POSIXct("2023-10-21 12:00:00")
+# mesa is marked as broken on darwin from 2023-05-29 until 2023-12-05
+commit_date <- as.POSIXct("2023-05-28 12:00:00")
 
-previous_date <- "2022-12-20"
+previous_date <- "2023-02-13"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 r_version <- set_r_version(target_date, r_versions)
