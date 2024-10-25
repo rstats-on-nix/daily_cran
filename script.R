@@ -42,7 +42,8 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 target_date <- as.POSIXct("2023-02-13 12:00:00")
 
 # mesa is marked as broken on darwin from 2023-05-29 until 2023-12-05
-commit_date <- as.POSIXct("2023-05-28 12:00:00")
+# curl must be on version 7 for R 4.2.2, so before 2023-03-20
+commit_date <- as.POSIXct("2023-03-20 12:00:00")
 
 previous_date <- "2023-02-13"
 
@@ -203,13 +204,15 @@ if(as.Date(commit_date) < as.Date("2023-04-27")){
                 ))
 }
 
+# Commented for 2023 bump, as it wasn't working with the corresponding
+# mkShell.
 # We need this patch until 2023-02-23
-if(as.Date(commit_date) < as.Date("2023-04-27")){
-  system(paste0("cd ",
-              repo_path,
-              " && git apply ../daily_cran/fix-rstan.patch"
-              ))
-}
+#if(as.Date(commit_date) < as.Date("2023-04-27")){
+#  system(paste0("cd ",
+#              repo_path,
+#              " && git apply ../daily_cran/fix-rstan.patch"
+#              ))
+#}
 
 # Fix later on darwin
 system(paste0("cd ",
@@ -227,7 +230,7 @@ system(paste0("cd ",
 }
 
 # Get latest mkShell to make it buildable
-if(as.Date(commit_date) < as.Date("2023-11-24")){
+if(as.Date(commit_date) < as.Date("2022-01-08")){
 
 system(paste0("cd ",
               repo_path,
