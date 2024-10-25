@@ -39,10 +39,9 @@ nixpkgs_commits <- fread("all_commits_df.csv")
 # the next one should be on the 29th of february 24
 # the next one should be on the 29th of april 24
 # the next one should be on the 14th of june 24
-target_date <- as.POSIXct("2022-12-20 12:00:00")
+target_date <- as.POSIXct("2023-02-13 12:00:00")
 
-# rJava and gdal work on darwin for this commit
-commit_date <- as.POSIXct("2022-12-21 12:00:00")
+commit_date <- as.POSIXct("2023-10-21 12:00:00")
 
 previous_date <- "2022-12-20"
 
