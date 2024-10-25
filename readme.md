@@ -22,6 +22,10 @@ Dates working on linux and aarch64-darwin (M-series of apple computers)
 - 2022-06-22: see https://github.com/rstats-on-nix/nixpkgs/commit/acfd0cc7dce72f9853c8aa4cb8903149485a4b71
 - 2022-08-22: see https://github.com/rstats-on-nix/nixpkgs/commit/375791e66932da7734e13202e7a7c5999b34f50d
 - 2022-10-20: see https://github.com/rstats-on-nix/nixpkgs/commit/fd313e8ac4868fc3fab6c98137fc43c36f3d985a
+- 2022-12-20: see
+  https://github.com/rstats-on-nix/nixpkgs/commit/b5a206e864a6b103891fe85c40e5c0bdc852e27e
+  (for this CRAN snapshot, this `nixpkgs` commit was used as a basis:
+  060f0dd496b10c5516de48977f268505a51ab116
 
 For each date, the right version of R is built as well. Packages listed in the
 `default.nix` are guaranteed to build, which should cover many use cases, but
