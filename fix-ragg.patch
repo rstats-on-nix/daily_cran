@@ -3,11 +3,11 @@ index c5ae2584806e..931a9ef2201f 100644
 --- a/pkgs/development/r-modules/default.nix
 +++ b/pkgs/development/r-modules/default.nix
 @@ -775,7 +775,7 @@ let
-     DropletUtils = [ pkgs.zlib ];
-     RMariaDB = [ pkgs.libmysqlclient ];
+     DropletUtils = [ pkgs.zlib.dev ];
+     RMariaDB = [ pkgs.libmysqlclient.dev ];
      ijtiff = [ pkgs.libtiff ];
--    ragg = with pkgs; [ freetype libpng libtiff zlib libjpeg bzip2 ] ++ lib.optional stdenv.hostPlatform.isDarwin lerc.dev;
-+    ragg = with pkgs; [ libdeflate freetype libpng libtiff zlib libjpeg bzip2 ] ++ lib.optional stdenv.hostPlatform.isDarwin lerc.dev;
-     qqconf = [ pkgs.fftw ];
-     spFW = [ pkgs.fftw ];
-     qspray = with pkgs; [ gmp mpfr ];
+-    ragg = with pkgs; [ freetype.dev libpng.dev libtiff.dev zlib.dev libjpeg.dev bzip2.dev ] ++ lib.optional stdenv.hostPlatform.isDarwin lerc.dev;
++    ragg = with pkgs; [ libdeflate freetype.dev libpng.dev libtiff.dev zlib.dev libjpeg.dev bzip2.dev ] ++ lib.optional stdenv.hostPlatform.isDarwin lerc.dev;
+     qqconf = [ pkgs.fftw.dev ];
+     spFW = [ pkgs.fftw.dev ];
+     qspray = with pkgs; [ gmp.dev mpfr.dev ];
