@@ -2,13 +2,22 @@
 
 ## Intro
 
-This repository builds the development environment defined in the
-`default.nix` on the root of the repo for Linux and macOS (arm64).
+This repository contains the necessary scripts to get CRAN snapshots for
+`nixpkgs` at specific dates.
 
 I forked upstream `nixpkgs` for this: https://github.com/rstats-on-nix/nixpkgs
 
 The reason being that I wanted to backport fixes for R packages but also
 for their dependencies, especially for macOS.
+
+For a given date, the script from this repo checkouts a commit from upstream
+`nixpkgs`, backports fixes, bumps the CRAN and Bioconductor packages, and then
+creates a new branch and pushes to the `rstats-on-nix/nixpkgs` fork.
+
+Each push to `rstats-on-nix/nixpkgs` starts a build in
+`rstats-on-nix/build_tree`. A `default.nix` defining an environment with popular
+packages and packages that are complicated to build gets built on Github Actions
+for Linux and macOS (arm64).
 
 For the year 2022, I use this commit of `nixpkgs` as a basis:
 https://github.com/NixOS/nixpkgs/commit/5dfcc4f9ab8c09516715e2d3052e7de3e41a98c1
