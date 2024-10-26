@@ -1,5 +1,5 @@
 { lib, stdenv, fetchurl, bzip2, gfortran, libX11, libXmu, libXt, libjpeg, libpng
-, libtiff, ncurses, pango, pcre2, perl, readline, tcl, texLive, tk, xz, zlib
+, libtiff, ncurses, pango, pcre2, perl, readline, tcl, texlive, texliveSmall, tk, xz, zlib
 , less, texinfo, graphviz, icu, pkg-config, bison, imake, which, jdk, blas, lapack
 , curl, Cocoa, Foundation, libobjc, libcxx, tzdata
 , withRecommendedPackages ? true
@@ -24,12 +24,14 @@ stdenv.mkDerivation (finalAttrs: {
     sha256 = "sha256-RdzEi2zyfTYQIPd/3ho5IJ6Ze4FAKzZjyhwBAFampgk=";
   };
 
+  outputs = [ "out" "tex" ];
+
   dontUseImakeConfigure = true;
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [
     bzip2 gfortran libX11 libXmu libXt libXt libjpeg libpng libtiff ncurses
-    pango pcre2 perl readline texLive xz zlib less texinfo graphviz icu
+    pango pcre2 perl readline (texliveSmall.withPackages (ps: with ps; [ inconsolata helvetic ps.texinfo fancyvrb cm-super rsfs ])) xz zlib less texinfo graphviz icu
     bison imake which blas lapack curl tcl tk jdk tzdata
   ] ++ lib.optionals stdenv.isDarwin [ Cocoa Foundation libobjc libcxx ];
 
@@ -89,6 +91,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   installTargets = [ "install" "install-info" "install-pdf" ];
 
+  # move tex files to $tex for use with texlive.combine
+  # add link in $out since ${R_SHARE_DIR}/texmf is hardcoded in several places
+  postInstall = ''
+    mv -T "$out/lib/R/share/texmf" "$tex"
+    ln -s "$tex" "$out/lib/R/share/texmf"
+  '';
+
   # The store path to "which" is baked into src/library/base/R/unix/system.unix.R,
   # but Nix cannot detect it as a run-time dependency because the installed file
   # is compiled and compressed, which hides the store path.
@@ -102,6 +111,12 @@ stdenv.mkDerivation (finalAttrs: {
   setupHook = ./setup-hook.sh;
 
   passthru.tests.pkg-config = testers.testMetaPkgConfig finalAttrs.finalPackage;
+
+  # make tex output available to texlive.combine
+  passthru.pkgs = [ finalAttrs.finalPackage.tex ];
+  passthru.tlType = "run";
+  # dependencies (based on \RequirePackage in jss.cls, Rd.sty, Sweave.sty)
+  passthru.tlDeps = with texlive; [ amsfonts amsmath fancyvrb graphics hyperref iftex jknapltx latex lm tools upquote url ];
 
   meta = with lib; {
     homepage = "http://www.r-project.org/";
