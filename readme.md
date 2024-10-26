@@ -87,6 +87,20 @@ weekly, but realized I would end up with so many binaries that no one would end
 up using that it wasn't really worth it. If you need a specific date though,
 open an issue, and I'll do it for that date.
 
+- Why use different commits of `nixpkgs` as basis? Wouldn't it be better to only
+pick one?
+
+Some R packages requires specific versions of specific development libraries, so
+I need to pick a `nixpkgs` revision that contains these versions of these
+libraries. Also, it can happen, especially for macOS, that some dependencies get
+broken at certain dates, so I need to pick a date where these issues have been
+fixed. For example `mesa` was marked as broken on darwin from 2023-05-29 until
+2023-12-05 and `curl` must be on version 7 for R 4.2.2, so before a `nixpkgs`
+revision before the 2023-03-20 had to be used. Another example was
+`libspatialite` using a deprecated feature of one its dependencies, `libxml2`
+which indirectly broke many R packages during the summer of 2024 for both Linux
+and macOS. These situations are rather uncommon, but when they happen, oh boy.
+
 - Why does it take hours to build the environment on my computer?
 
 This is because many of these older packages are not in the public NixOS binary
