@@ -42,7 +42,7 @@ r_version <- set_r_version(target_date, r_versions)
 # Now, we try for 2021 by using this commit at january 2022
 target_commit <- "7d73fd6e94000f1a5bce2ed8f1852ba848da554d"
 
-                                        # Set the local repository path
+# Set the local repository path
 repo_path <- "../nixpkgs"
 
 repo <- repository(repo_path)
@@ -62,6 +62,20 @@ old_string <- paste0("cran/", previous_date)
 new_string <- paste0("cran/", target_date)
 
 modified_content <- str_replace(file_content, old_string, new_string)
+
+writeLines(modified_content, file_path)
+
+# Do the same for the default.nix
+file_path <- file.path(repo_path,
+                       "pkgs/development/r-modules/default.nix")
+
+file_content <- readLines(file_path)
+
+old_string <- paste0("cran/", previous_date)
+
+new_string <- paste0("cran/", target_date)
+
+modified_content <- str_replace_all(file_content, old_string, new_string)
 
 writeLines(modified_content, file_path)
 
