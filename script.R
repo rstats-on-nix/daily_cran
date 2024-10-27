@@ -36,7 +36,7 @@ target_date <- as.POSIXct("2024-10-01 12:00:00")
 # mesa is marked as broken on darwin from 2023-05-29 until 2023-12-05
 # curl must be on version 7 for R 4.2.2, so before 2023-03-20
 # (for the february 2023 commit)
-commit_date <- as.POSIXct("2024-10-25 12:00:00")
+commit_date <- as.POSIXct("2024-06-29 12:00:00")
 
 previous_date <- "2024-06-14"
 
@@ -53,7 +53,7 @@ closest_commit_df <- nixpkgs_commits[
                                  ][
                                   order(diff)][1]
 
-target_commit <- closest_commit_df$sha
+target_commit <- "bcd2f0016d4f4f23bce8ef040bae83b12020d1cd"# closest_commit_df$sha
 
 ## Need to see if I need the below
 repo_url <- "https://github.com/NixOS/nixpkgs.git"

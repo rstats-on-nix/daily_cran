@@ -58,10 +58,16 @@ released in 2023 that depended on the (at the time) development version of R
   - 2024-02-29: see https://github.com/rstats-on-nix/nixpkgs/commit/f749e864e0f08ebd7040a467626331616267d088
   - 2024-04-29: see https://github.com/rstats-on-nix/nixpkgs/commit/ac0a00a1a31cc1c7d8e38a2553fa46330eecf73f
   - 2024-06-14: see https://github.com/rstats-on-nix/nixpkgs/commit/22bb52431cc29da70d37cea1af32f0365410c68b
+  - 2024-10-01: see https://github.com/rstats-on-nix/nixpkgs/commit/bb702f4c7a89c9dcf0507e8fe1ded3877f8f9c8d
 
 For the year 2024, I use this commit of `nixpkgs` as a basis:
 https://github.com/NixOS/nixpkgs/commit/bcd2f0016d4f4f23bce8ef040bae83b12020d1cd
-for the February, April and June commit
+for the February, April, June and October commit, and this one for the rest of
+the year I've used my daily CRAN snapshots from
+https://github.com/rstats-on-nix/nixpkgs/commits/r-daily by picking a suitable
+date, and testing if the environment builds. If yes, then this becomes a
+distinct branch.
+
 
 
 For each date, the right version of R is built as well. Packages listed in the
