@@ -15,7 +15,7 @@ get_versions <- function(url){
     filter(last_modified != "") %>%
     select(name, last_modified) %>%
     mutate(hu = as.Date(last_modified)) %>%
-    filter(hu > as.Date("2022-01-16"))
+    filter(hu > as.Date("2021-01-16"))
 
 }
 
