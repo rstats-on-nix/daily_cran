@@ -1,0 +1,13 @@
+diff --git a/pkgs/development/r-modules/cran-packages.nix b/pkgs/development/r-modules/cran-packages.nix
+index cd31740add5f..4a601115dbc8 100644
+--- a/pkgs/development/r-modules/cran-packages.nix
++++ b/pkgs/development/r-modules/cran-packages.nix
+@@ -2776,7 +2776,7 @@ in with self; {
+   MARSS = derive2 { name="MARSS"; version="3.11.8"; sha256="1c8cw8vah1q96vamx195idhaqq6byd7myn987wx2m48skzvd9bxl"; depends=[generics KFAS mvtnorm nlme]; };
+   MARSSVRhybrid = derive2 { name="MARSSVRhybrid"; version="0.1.0"; sha256="10b8d75q5hiqf8id1qsvjx379xyx4vphq5r1iwvykjaw4zxbyx65"; depends=[e1071 earth]; };
+   MARVEL = derive2 { name="MARVEL"; version="1.4.0"; sha256="01mgwwidff25wzv0p7bazwpkrl6pg1yqvp4826g4sh3l3nkcb5d9"; depends=[ggplot2 Matrix plyr scales]; };
+-  MASS = derive2 { name="MASS"; version="7.3-60.1"; sha256="0nh9g1qf23p3jpc6xg539hvr7745cvvksmssrnbihxfbjczn9gl2"; depends=[]; };
++  MASS = derive2 { name="MASS"; version="7.3-60"; sha256="sha256-fqaFsVjUGDipoV69sNFa3L7aYSA29Q4dqx9cw6htuwM="; depends=[]; };
+   MASSExtra = derive2 { name="MASSExtra"; version="1.2.2"; sha256="0xqbmbpdr0chwmcj9lsax4nrfxv4cfmjsm4anwsch510y2hai18x"; depends=[demoKde MASS]; };
+   MASSTIMATE = derive2 { name="MASSTIMATE"; version="2.0-1"; sha256="1dvidwjw4zgflms5njbd9n85g1gbgfg6hk0fb63q5n65iyxxfmyh"; depends=[]; };
+   MAT = derive2 { name="MAT"; version="2.3.1"; sha256="1lb6bzyxnclfw4ndfby4zmqmihiqxgjszwwdx0jymgy02hc4kawg"; depends=[Rcpp RcppArmadillo]; };

@@ -30,20 +30,15 @@ set_r_version <- function(target_date, r_versions){
 # Get commit from target date
 nixpkgs_commits <- fread("all_commits_df.csv")
 
-# the next one should be on the 15th of august 23
-# the next one should be on the 30th of october 23
-# the next one should be on the 30th of december 23
-# the next one should be on the 29th of february 24
-# the next one should be on the 29th of april 24
 # the next one should be on the 14th of june 24
-target_date <- as.POSIXct("2023-08-15 12:00:00")
+target_date <- as.POSIXct("2024-10-01 12:00:00")
 
 # mesa is marked as broken on darwin from 2023-05-29 until 2023-12-05
 # curl must be on version 7 for R 4.2.2, so before 2023-03-20
 # (for the february 2023 commit)
-commit_date <- as.POSIXct("2023-12-06 12:00:00")
+commit_date <- as.POSIXct("2024-10-25 12:00:00")
 
-previous_date <- "2023-06-15"
+previous_date <- "2024-06-14"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 r_version <- set_r_version(target_date, r_versions)
@@ -256,6 +251,15 @@ system(paste0("cd ",
 
 }
 
+# Fix libspatialite before 2024-10-22
+if(as.Date("2024-07-27") < as.Date(commit_date) < as.Date("2024-10-23")){
+
+system(paste0("cd ",
+              repo_path,
+              " && curl https://github.com/NixOS/nixpkgs/commit/1f09ed79a4fe5530880a9c6aa2f0ceba45bfbd36.patch | git apply"))
+
+}
+
 # Download previous file to make bumping faster
 system(paste0("cd ",
               repo_path,
@@ -307,6 +311,22 @@ system(paste0("cd ",
               "/pkgs/development/r-modules/ && ",
               "sed -i '/r_import.*name=\"r_import\"/d' cran-packages.nix")
               )
+
+# For some reason, MASS 7.3-60.1 which was released in July 2023 depends
+# on R version 4.4.0 which was released in February 2024. There's a mistake
+# somewhere, so this needs to be solved "a la mano"
+if (r_version %in% c("4.3.1", "4.3.2")){
+  system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-MASS-R-4.3.x.patch"
+                ))
+
+  # If the above patch cannot be applied, then this one
+  system(paste0("cd ",
+                repo_path,
+                " && git apply ../daily_cran/fix-MASS-R-4.3.x-2.patch"
+                ))
+}
 
 # Get correct version of R for that day. It should be the same as the
 # one in nixpkgs at that time most of the time

@@ -31,7 +31,7 @@ Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!)
   - 2022-12-20: see
     https://github.com/rstats-on-nix/nixpkgs/commit/b5a206e864a6b103891fe85c40e5c0bdc852e27e
 
-For the year 2022, I use his commit of `nixpkgs` as a basis: https://github.com/NixOS/nixpkgs/commit/5dfcc4f9ab8c09516715e2d3052e7de3e41a98c1, but for the one in
+For the year 2022, I use this commit of `nixpkgs` as a basis: https://github.com/NixOS/nixpkgs/commit/5dfcc4f9ab8c09516715e2d3052e7de3e41a98c1, but for the one in
 December I use this one instead: https://github.com/NixOS/nixpkgs/commit/060f0dd496b10c5516de48977f268505a51ab116
 
 * 2023:
@@ -39,14 +39,30 @@ December I use this one instead: https://github.com/NixOS/nixpkgs/commit/060f0dd
   - 2023-02-13: see https://github.com/rstats-on-nix/nixpkgs/commit/ed82b127e22e83cefc7b5e624d40f833ef44969a
   - 2023-04-01: see https://github.com/rstats-on-nix/nixpkgs/commit/755f90f8210ef848882e1865359e957a7876e3da
   - 2023-06-01: see https://github.com/rstats-on-nix/nixpkgs/commit/823018e017665e3dcac7b96c5745bb2e1d631340
-  - 2023-08-15: see 
+  - 2023-08-15: see https://github.com/rstats-on-nix/nixpkgs/commit/084aa29838f755c47a838d2dd106006687d05175
+  - 2023-10-30: see https://github.com/rstats-on-nix/nixpkgs/commit/8e2fc8d45be09a463587424a540f9b96cf08cbd3
+  - 2023-12-30: see https://github.com/rstats-on-nix/nixpkgs/commit/b55b2a76cc631a5df6d308c8ac578ccc8c335513
 
-For the year 2023, I use his commit of `nixpkgs` as a basis:
+For the year 2023, I use this commit of `nixpkgs` as a basis:
 https://github.com/NixOS/nixpkgs/commit/6da67309c6d13f6dde2f6608af883dd5f81316a1
 for the February snapshot, this one for the April snapshot
 https://github.com/NixOS/nixpkgs/commit/71fa8d5b8fb70f00f891cbf935860c81306d8b7c
 and for the others this one:
 https://github.com/NixOS/nixpkgs/commit/e529b7fed078a9054cc3ea6a4c305edeff1b1e9f
+The 2023 snapshots deal with the MASS issue where some versions of MASS where
+released in 2023 that depended on the (at the time) development version of R
+(version 4.4.0 that got released in February 2024).
+
+* 2024:
+
+  - 2024-02-29: see https://github.com/rstats-on-nix/nixpkgs/commit/f749e864e0f08ebd7040a467626331616267d088
+  - 2024-04-29: see https://github.com/rstats-on-nix/nixpkgs/commit/ac0a00a1a31cc1c7d8e38a2553fa46330eecf73f
+  - 2024-06-14: see https://github.com/rstats-on-nix/nixpkgs/commit/22bb52431cc29da70d37cea1af32f0365410c68b
+
+For the year 2024, I use this commit of `nixpkgs` as a basis:
+https://github.com/NixOS/nixpkgs/commit/bcd2f0016d4f4f23bce8ef040bae83b12020d1cd
+for the February, April and June commit
+
 
 For each date, the right version of R is built as well. Packages listed in the
 `default.nix` are guaranteed to build, which should cover many use cases, but
