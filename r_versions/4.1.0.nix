@@ -1,9 +1,10 @@
 { lib, stdenv, fetchurl, bzip2, gfortran, libX11, libXmu, libXt, libjpeg, libpng
 , libtiff, ncurses, pango, pcre2, perl, readline, tcl, texLive, tk, xz, zlib
 , less, texinfo, graphviz, icu, pkg-config, bison, imake, which, jdk, blas, lapack
-, curl, Cocoa, Foundation, libobjc, libcxx, tzdata, fetchpatch
+, curl, Cocoa, Foundation, libobjc, libcxx, tzdata
 , withRecommendedPackages ? true
 , enableStrictBarrier ? false
+, enableMemoryProfiling ? false
 # R as of writing does not support outputting both .so and .a files; it outputs:
 #     --enable-R-static-lib conflicts with --enable-R-shlib and will be ignored
 , static ? false
@@ -30,26 +31,18 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./no-usr-local-search-paths.patch
-  ] ++ lib.optionals (!withRecommendedPackages) [
-    (fetchpatch {
-       name = "fix-tests-without-recommended-packages.patch";
-       url = "https://github.com/wch/r-source/commit/7715c67cabe13bb15350cba1a78591bbb76c7bac.patch";
-       # this part of the patch reverts something that was committed after R 4.1.0, so ignore it.
-       excludes = [ "tests/Pkgs/xDir/pkg/DESCRIPTION" ];
-       sha256 = "sha256-iguLndCIuKuCxVCi/4NSu+9RzBx5JyeHx3K6IhpYshQ=";
-    })
-    (fetchpatch {
-      name = "use-codetools-conditionally.patch";
-      url = "https://github.com/wch/r-source/commit/7543c28b931db386bb254e58995973493f88e30d.patch";
-      sha256 = "sha256-+yHXB5AItFyQjSxfogxk72DrSDGiBh7OiLYFxou6Xlk=";
-    })
+    ./skip-check-for-aarch64.patch
   ];
 
-  prePatch = lib.optionalString stdenv.isDarwin ''
+  # Test of the examples for package 'tcltk' fails in Darwin sandbox. See:
+  # https://github.com/NixOS/nixpkgs/issues/146131
+  postPatch = lib.optionalString stdenv.isDarwin ''
     substituteInPlace configure \
       --replace "-install_name libRblas.dylib" "-install_name $out/lib/R/lib/libRblas.dylib" \
       --replace "-install_name libRlapack.dylib" "-install_name $out/lib/R/lib/libRlapack.dylib" \
       --replace "-install_name libR.dylib" "-install_name $out/lib/R/lib/libR.dylib"
+    substituteInPlace tests/Examples/Makefile.in \
+      --replace "test-Examples: test-Examples-Base" "test-Examples:" # do not test the examples
   '';
 
   dontDisableStatic = static;
@@ -68,6 +61,7 @@ stdenv.mkDerivation rec {
       --with-libtiff
       --with-ICU
       ${lib.optionalString enableStrictBarrier "--enable-strict-barrier"}
+      ${lib.optionalString enableMemoryProfiling "--enable-memory-profiling"}
       ${if static then "--enable-R-static-lib" else "--enable-R-shlib"}
       AR=$(type -p ar)
       AWK=$(type -p gawk)
@@ -128,7 +122,6 @@ stdenv.mkDerivation rec {
     '';
 
     platforms = platforms.all;
-    hydraPlatforms = platforms.linux;
 
     maintainers = with maintainers; [ peti ] ++ teams.sage.members;
   };

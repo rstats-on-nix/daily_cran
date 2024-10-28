@@ -29,7 +29,7 @@ set_r_version <- function(target_date, r_versions){
     dplyr::pull(r_version)
 }
 
-target_date <- as.POSIXct("2021-10-28 12:00:00")
+target_date <- as.POSIXct("2021-08-03 12:00:00")
 
 commit_date <- as.POSIXct("2021-12-01 12:00:00")
 

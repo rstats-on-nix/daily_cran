@@ -23,11 +23,13 @@ Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!)
 
 * 2021:
   - 2021-10-28: see https://github.com/rstats-on-nix/nixpkgs/commit/88567ee830e6a273c05294e445df9cba10aed111
+  - 2021-08-03: see https://github.com/rstats-on-nix/nixpkgs/commit/f190b349565535c05ceef0c9d427a3e7a1806cf4
 
 The 2021 dates were particularly complicated to get to work on macOS, so we had
 to make the following concession: the `nixpkgs` commit used as a basis is the
 same as the one for January 2022, and `{cpp11}` had to be updated from version
-0.4.0 to version 0.4.2 and `{rstan}` from version 2.21.2 to version 2.21.3.
+0.4.0 to version 0.4.2, `{rstan}` from version 2.21.2 to version 2.21.3 and
+`{arrow}` is at version 9.
 
 * 2022:
 
