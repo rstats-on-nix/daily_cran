@@ -21,6 +21,14 @@ Github Actions for Linux (amd64 and arm64) and macOS (arm64).
 
 Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!):
 
+* 2021:
+  - 2021-10-28: see https://github.com/rstats-on-nix/nixpkgs/commit/88567ee830e6a273c05294e445df9cba10aed111
+
+The 2021 dates were particularly complicated to get to work on macOS, so we had
+to make the following concession: the `nixpkgs` commit used as a basis is the
+same as the one for January 2022, and `{cpp11}` had to be updated from version
+0.4.0 to version 0.4.2 and `{rstan}` from version 2.21.2 to version 2.21.3.
+
 * 2022:
 
   - 2022-01-16: see https://github.com/rstats-on-nix/nixpkgs/commit/7d73fd6e94000f1a5bce2ed8f1852ba848da554d
