@@ -1,4 +1,4 @@
-# Recurrent snapshots of CRAN for nixpkgs
+# Dated snapshots of CRAN for nixpkgs
 
 ## Intro
 
@@ -22,8 +22,9 @@ Github Actions for Linux (amd64 and arm64) and macOS (arm64).
 Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!):
 
 * 2021:
-  - 2021-10-28: see https://github.com/rstats-on-nix/nixpkgs/commit/88567ee830e6a273c05294e445df9cba10aed111
+  - 2021-05-29: see https://github.com/rstats-on-nix/nixpkgs/commit/853f17ea45642fffdf1531eacca229fbe9c28730
   - 2021-08-03: see https://github.com/rstats-on-nix/nixpkgs/commit/f190b349565535c05ceef0c9d427a3e7a1806cf4
+  - 2021-10-28: see https://github.com/rstats-on-nix/nixpkgs/commit/88567ee830e6a273c05294e445df9cba10aed111
 
 The 2021 dates were particularly complicated to get to work on macOS, so we had
 to make the following concession: the `nixpkgs` commit used as a basis is the
