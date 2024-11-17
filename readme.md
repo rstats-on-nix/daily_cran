@@ -28,7 +28,8 @@ Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!)
 
 The 2021 dates were particularly complicated to get to work on macOS, so we had
 to make the following concession: the `nixpkgs` commit used as a basis is the
-same as the one for January 2022, and `{cpp11}` had to be updated from version
+same as the one for January 2022 (mostly because support for Apple Silicon before
+that was not quite there yet), and `{cpp11}` had to be updated from version
 0.4.0 to version 0.4.2, `{rstan}` from version 2.21.2 to version 2.21.3 and
 `{arrow}` is at version 9. `{isoband}` and `{textshaping}` also had to be updated
 for the April and May dates.
@@ -40,8 +41,7 @@ for the April and May dates.
   - 2022-06-22: see https://github.com/rstats-on-nix/nixpkgs/commit/acfd0cc7dce72f9853c8aa4cb8903149485a4b71
   - 2022-08-22: see https://github.com/rstats-on-nix/nixpkgs/commit/375791e66932da7734e13202e7a7c5999b34f50d
   - 2022-10-20: see https://github.com/rstats-on-nix/nixpkgs/commit/fd313e8ac4868fc3fab6c98137fc43c36f3d985a
-  - 2022-12-20: see
-    https://github.com/rstats-on-nix/nixpkgs/commit/b5a206e864a6b103891fe85c40e5c0bdc852e27e
+  - 2022-12-20: see https://github.com/rstats-on-nix/nixpkgs/commit/b5a206e864a6b103891fe85c40e5c0bdc852e27e
 
 For the year 2022, I use this commit of `nixpkgs` as a basis: https://github.com/NixOS/nixpkgs/commit/5dfcc4f9ab8c09516715e2d3052e7de3e41a98c1, but for the one in
 December I use this one instead: https://github.com/NixOS/nixpkgs/commit/060f0dd496b10c5516de48977f268505a51ab116
