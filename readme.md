@@ -30,7 +30,8 @@ The 2021 dates were particularly complicated to get to work on macOS, so we had
 to make the following concession: the `nixpkgs` commit used as a basis is the
 same as the one for January 2022, and `{cpp11}` had to be updated from version
 0.4.0 to version 0.4.2, `{rstan}` from version 2.21.2 to version 2.21.3 and
-`{arrow}` is at version 9.
+`{arrow}` is at version 9. `{isoband}` and `{textshaping}` also had to be updated
+for the April and May dates.
 
 * 2022:
 
