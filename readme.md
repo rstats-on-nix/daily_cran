@@ -51,7 +51,7 @@ December I use this one instead: https://github.com/NixOS/nixpkgs/commit/060f0dd
 
   - 2023-02-13: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-02-13
   - 2023-04-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-04-01
-  - 2023-06-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-06-01
+  - 2023-06-15: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-06-15
   - 2023-08-15: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-08-15
   - 2023-10-30: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-10-30
   - 2023-12-30: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-12-30
