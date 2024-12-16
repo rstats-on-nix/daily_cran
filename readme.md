@@ -72,7 +72,8 @@ released in 2023 that depended on the (at the time) development version of R
   - 2024-04-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-04-29
   - 2024-06-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-06-14
   - 2024-10-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-10-01
-
+  - 2024-12-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-12-14
+  
 For the year 2024, I use this commit of `nixpkgs` as a basis:
 https://github.com/NixOS/nixpkgs/commit/bcd2f0016d4f4f23bce8ef040bae83b12020d1cd
 for the February, April, June and October commit, and this one for the rest of
