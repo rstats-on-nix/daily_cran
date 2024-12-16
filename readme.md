@@ -71,6 +71,7 @@ released in 2023 that depended on the (at the time) development version of R
   - 2024-02-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-02-29
   - 2024-04-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-04-29
   - 2024-06-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-06-14
+  - 2024-08-19: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-08-19
   - 2024-10-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-10-01
   - 2024-12-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-12-14
   
