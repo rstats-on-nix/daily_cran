@@ -7,6 +7,8 @@ let
       arrow
       data_table
       dplyr
+      furrr
+      progressr
       jsonlite
       git2r
       versions
