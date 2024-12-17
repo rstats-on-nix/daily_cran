@@ -19,6 +19,7 @@ jobs:
           -d '{
             "event_type": "trigger-workflow",
             "client_payload": {
-              "ref_name": "${{ github.ref_name }}"
+              "ref_name": "${{ github.ref_name }}",
+              "platforms": "[ubuntu-latest, macos-14]"
             }
           }'

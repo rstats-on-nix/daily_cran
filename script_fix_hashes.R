@@ -58,4 +58,4 @@ writeLines(output, output_file)
 
 system(paste0("cd ../nixpkgs/",
       " && git add . && git commit -m 'updated hashes and backported rJava fix'",
-      " && git push --force origin 2024-10-01"))
+      " && git push origin 2020-08-20"))

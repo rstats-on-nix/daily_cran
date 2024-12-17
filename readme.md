@@ -21,7 +21,12 @@ Github Actions for Linux (amd64 and arm64) and macOS (arm64).
 
 Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!):
 
-* 2021:
+* 2020, working and tested on amd64 Linux (can potentially work on Intel Macs,
+but not Apple Silicon):
+  - 2020-08-20: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-08-20
+
+* 2021, working and tested on amd64 Linux and Apple Silicon (can potentially work
+on Intel Macs):
   - 2021-04-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-04-01
   - 2021-05-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-05-29
   - 2021-08-03: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-08-03
@@ -35,8 +40,8 @@ that was not quite there yet), and `{cpp11}` had to be updated from version
 `{arrow}` is at version 9. `{isoband}` and `{textshaping}` also had to be updated
 for the April and May dates.
 
-* 2022:
-
+* 2022, working and tested on amd64 Linux and Apple Silicon (can potentially work
+on Intel Macs):
   - 2022-01-16: see https://github.com/rstats-on-nix/nixpkgs/tree/2022-01-16
   - 2022-04-19: see https://github.com/rstats-on-nix/nixpkgs/tree/2022-04-19
   - 2022-06-22: see https://github.com/rstats-on-nix/nixpkgs/tree/2022-06-22
@@ -47,8 +52,8 @@ for the April and May dates.
 For the year 2022, I use this commit of `nixpkgs` as a basis: https://github.com/NixOS/nixpkgs/commit/5dfcc4f9ab8c09516715e2d3052e7de3e41a98c1, but for the one in
 December I use this one instead: https://github.com/NixOS/nixpkgs/commit/060f0dd496b10c5516de48977f268505a51ab116
 
-* 2023:
-
+* 2023, working and tested on amd64 Linux and Apple Silicon (can potentially work
+on Intel Macs):
   - 2023-02-13: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-02-13
   - 2023-04-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-04-01
   - 2023-06-15: see https://github.com/rstats-on-nix/nixpkgs/tree/2023-06-15
@@ -66,15 +71,15 @@ The 2023 snapshots deal with the MASS issue where some versions of MASS where
 released in 2023 that depended on the (at the time) development version of R
 (version 4.4.0 that got released in February 2024).
 
-* 2024:
-
+* 2024, working and tested on amd64 Linux and Apple Silicon (can potentially work
+on Intel Macs):
   - 2024-02-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-02-29
   - 2024-04-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-04-29
   - 2024-06-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-06-14
   - 2024-08-19: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-08-19
   - 2024-10-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-10-01
   - 2024-12-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-12-14
-  
+
 For the year 2024, I use this commit of `nixpkgs` as a basis:
 https://github.com/NixOS/nixpkgs/commit/bcd2f0016d4f4f23bce8ef040bae83b12020d1cd
 for the February, April, June and October commit, and this one for the rest of

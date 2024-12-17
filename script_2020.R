@@ -77,6 +77,8 @@ system(paste0("cd ",
               repo_path,
               "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran > new && mv new cran-packages.nix"))
 
+delete the snapshot from cran-packages.nix
+
 system(paste0("cd ",
               repo_path,
               "/pkgs/development/r-modules/ && Rscript generate-r-packages.R bioc > new && mv new bioc-packages.nix"))
