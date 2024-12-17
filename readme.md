@@ -145,9 +145,9 @@ zoo
 ```
 </details>
 
-This packages are guaranteed to build for the listed dates and platforms below.
-If you get a run-time error (meaning, you load the package, try to use it, but
-get some error) then please open an issue.
+These packages (and their direct dependencies) are guaranteed to build for the
+listed dates and platforms below. If you get a run-time error (meaning, you load
+the package, try to use it, but get some error) then please open an issue.
 
 Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!):
 
