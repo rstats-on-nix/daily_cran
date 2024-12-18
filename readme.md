@@ -267,7 +267,8 @@ zoo
 </details>
 
 These packages (and their direct dependencies) are guaranteed to build for the
-listed dates and platforms below. If you get a run-time error (meaning, you load
+listed dates and platforms below. This doesn't mean that other packages won't
+work, only that I didn't test them. If you get a run-time error (meaning, you load
 the package, try to use it, but get some error) then please open an issue.
 
 Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!):
@@ -275,6 +276,7 @@ Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!)
 * 2020, working and tested on amd64 Linux (can potentially work on Intel Macs,
 but not Apple Silicon):
   - 2020-08-20: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-08-20
+  - 2020-10-30: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-10-30
 
 * 2021, working and tested on amd64 Linux and Apple Silicon (can potentially work
 on Intel Macs):
