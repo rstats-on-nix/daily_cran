@@ -275,8 +275,11 @@ Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!)
 
 * 2020, working and tested on amd64 Linux (can potentially work on Intel Macs,
 but not Apple Silicon):
+  - 2020-06-07: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-06-07
   - 2020-08-20: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-08-20
   - 2020-10-30: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-10-30
+For the year 2020, collapse is always at 1.6.5, which is the earliest version
+that we were able to compile for Nix.
 
 * 2021, working and tested on amd64 Linux and Apple Silicon (can potentially work
 on Intel Macs):
