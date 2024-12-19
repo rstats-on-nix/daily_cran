@@ -21,7 +21,7 @@ mirrorType <- "cran"
 
 # Probably no need to ever update biocVersion since
 # I'm only checking CRAN packages
-biocVersion <- "3.19"
+biocVersion <- "3.11"
 
 mirrorUrls <- list( bioc=paste0("http://bioconductor.org/packages/",
                   biocVersion, "/bioc/src/contrib/") ,
@@ -58,4 +58,4 @@ writeLines(output, output_file)
 
 system(paste0("cd ../nixpkgs/",
       " && git add . && git commit -m 'updated hashes and backported rJava fix'",
-      " && git push origin 2020-08-20"))
+      " && git push origin 2019-12-19"))

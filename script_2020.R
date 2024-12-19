@@ -26,15 +26,15 @@ set_r_version <- function(target_date, r_versions){
     dplyr::pull(r_version)
 }
 
-target_date <- as.POSIXct("2020-08-20 12:00:00")
+target_date <- as.POSIXct("2019-07-22 12:00:00")
 
-previous_date <- "2021-04-01"
+previous_date <- "2020-08-20"
 
 bioc_version <- set_bioc_version(target_date, bioc_versions)
 #r_version <- set_r_version(target_date, r_versions)
-r_version <- "4.0.2"
+#r_version <- "4.0.3"
 
-target_commit <- "a3f9335ed25c3dbe5fa168392f17c813e0e06621"
+#target_commit <- "a3f9335ed25c3dbe5fa168392f17c813e0e06621"
 
 # Set the local repository path
 repo_path <- "../nixpkgs"
@@ -77,7 +77,7 @@ system(paste0("cd ",
               repo_path,
               "/pkgs/development/r-modules/ && Rscript generate-r-packages.R cran > new && mv new cran-packages.nix"))
 
-delete the snapshot from cran-packages.nix
+#delete the snapshot from cran-packages.nix
 
 system(paste0("cd ",
               repo_path,
@@ -122,4 +122,4 @@ system(paste0("cd ",
               repo_path,
               " && git checkout -b '", target_date, "'",
               " && git add . && git commit -m 'R CRAN update'",
-              " && git push --force origin ", target_date))
+              " && git push origin ", target_date))

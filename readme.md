@@ -19,7 +19,8 @@ Each push to `rstats-on-nix/nixpkgs` starts a build in the
 with popular packages and packages that are complicated to build gets built on
 Github Actions for Linux (amd64 and arm64) and macOS (arm64).
 
-Here is the list of packages that were built and tested:
+Here is the list of packages that were built and tested (but keep in mind that
+just because a package isn't listed, doesn't mean it's not going to work!):
 
 <details>
   <summary>Click to show package list</summary>
@@ -273,11 +274,18 @@ the package, try to use it, but get some error) then please open an issue.
 
 Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!):
 
+* 2019, working and tested on amd64 Linux (can potentially work on Intel Macs,
+but not Apple Silicon):
+  - 2019-12-19: see https://github.com/rstats-on-nix/nixpkgs/tree/2019-12-19
+
 * 2020, working and tested on amd64 Linux (can potentially work on Intel Macs,
 but not Apple Silicon):
+  - 2020-03-12: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-03-12
+  - 2020-04-27: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-04-27
   - 2020-06-07: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-06-07
   - 2020-08-20: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-08-20
   - 2020-10-30: see https://github.com/rstats-on-nix/nixpkgs/tree/2020-10-30
+
 For the year 2020, collapse is always at 1.6.5, which is the earliest version
 that we were able to compile for Nix.
 
