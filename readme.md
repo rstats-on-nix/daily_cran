@@ -276,6 +276,9 @@ Then I "update" R packages on these dates (thanks to the Posit CRAN snapshots!!)
 
 * 2019, working and tested on amd64 Linux (can potentially work on Intel Macs,
 but not Apple Silicon):
+  - 2019-03-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2019-03-14
+  - 2019-05-05: see https://github.com/rstats-on-nix/nixpkgs/tree/2019-05-05
+  - 2019-07-22: see https://github.com/rstats-on-nix/nixpkgs/tree/2019-07-22
   - 2019-12-19: see https://github.com/rstats-on-nix/nixpkgs/tree/2019-12-19
 
 * 2020, working and tested on amd64 Linux (can potentially work on Intel Macs,

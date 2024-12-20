@@ -26,7 +26,7 @@ set_r_version <- function(target_date, r_versions){
     dplyr::pull(r_version)
 }
 
-target_date <- as.POSIXct("2019-07-22 12:00:00")
+target_date <- as.POSIXct("2019-03-14 12:00:00")
 
 previous_date <- "2020-08-20"
 
