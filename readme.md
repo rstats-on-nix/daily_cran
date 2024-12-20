@@ -294,6 +294,7 @@ that we were able to compile for Nix.
 
 * 2021, working and tested on amd64 Linux and Apple Silicon (can potentially work
 on Intel Macs):
+  - 2021-02-26: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-02-26
   - 2021-04-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-04-01
   - 2021-05-29: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-05-29
   - 2021-08-03: see https://github.com/rstats-on-nix/nixpkgs/tree/2021-08-03
@@ -301,11 +302,12 @@ on Intel Macs):
 
 The 2021 dates were particularly complicated to get to work on macOS, so we had
 to make the following concession: the `nixpkgs` commit used as a basis is the
-same as the one for January 2022 (mostly because support for Apple Silicon before
-that was not quite there yet), and `{cpp11}` had to be updated from version
-0.4.0 to version 0.4.2, `{rstan}` from version 2.21.2 to version 2.21.3 and
-`{arrow}` is at version 9. `{isoband}` and `{textshaping}` also had to be updated
-for the April and May dates.
+same as the one for January 2022 (mostly because support for Apple Silicon
+before that was not quite there yet), and `{cpp11}` had to be updated from
+version 0.4.0 to version 0.4.2, `{rstan}` from version 2.21.2 to version 2.21.3
+and `{arrow}` is at version 9. `{isoband}` and `{textshaping}` also had to be
+updated for the April and May dates. `{testthat}` also had to be updated from
+3.0.2 to 3.0.4.
 
 * 2022, working and tested on amd64 Linux and Apple Silicon (can potentially work
 on Intel Macs):

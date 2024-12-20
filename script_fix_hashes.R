@@ -57,5 +57,5 @@ output <- c(
 writeLines(output, output_file)
 
 system(paste0("cd ../nixpkgs/",
-      " && git add . && git commit -m 'updated hashes and backported rJava fix'",
-      " && git push origin 2019-03-14"))
+      " && git add . && git commit -m 'updated hashes'",
+      " && git push origin 2021-02-26"))
