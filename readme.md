@@ -349,6 +349,7 @@ on Intel Macs):
   - 2024-10-01: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-10-01
   - 2024-12-14: see https://github.com/rstats-on-nix/nixpkgs/tree/2024-12-14
 
+
 For the year 2024, I use this commit of `nixpkgs` as a basis:
 https://github.com/NixOS/nixpkgs/commit/bcd2f0016d4f4f23bce8ef040bae83b12020d1cd
 for the February, April, June and October commit, and this one for the rest of
@@ -357,6 +358,8 @@ https://github.com/rstats-on-nix/nixpkgs/commits/r-daily by picking a suitable
 date, and testing if the environment builds. If yes, then this becomes a
 distinct branch.
 
+After the 2024-12-14, there is a daily snapshot, but only Mondays get fixes,
+so use other weekdays at your own risk.
 
 For each date, the right version of R is built as well. Packages listed in the
 `default.nix` are guaranteed to build, which should cover many use cases, but
@@ -378,16 +381,15 @@ if you need older versions of packages or R.
 
 - How do I use this?
 
-For now there is no easy way to use this. You can define an environment and
-point to the fork like so in your `default.nix`:
+My R package, [rix](https://docs.ropensci.org/rix/), generates expressions that
+point to the `rstats-on-nix/nixpkgs` fork. If you don’t use {rix} to generate
+expressions, shame on you, but you can still benefit from it by editing
+your `default.nix` or flake input files like this:
 
 ```
 let
  pkgs = import (fetchTarball "https://github.com/rstats-on-nix/nixpkgs/archive/refs/heads/2022-08-22.tar.gz") {};
 ```
-
-which will build the environment at that date. At some point I will include
-a way to use this with [rix](https://docs.ropensci.org/rix/).
 
 - Why only these dates?
 
@@ -413,8 +415,7 @@ and macOS. These situations are rather uncommon, but when they happen, oh boy.
 
 - Why does it take hours to build the environment on my computer?
 
-This is because many of these older packages are not in the public NixOS binary
-cache, so you have to build everything locally. I'm looking into setting up a
-public cache for this fork, in the meantime, I recommend you build the packages
-on Github Actions and cache the binaries using Cachix as explained
-[here](https://docs.ropensci.org/rix/articles/z-binary_cache.html).
+Use cachix to setup the `rstats-on-nix` public cache, see the instructions to set
+up Cachix 
+[here](https://docs.ropensci.org/rix/articles/b1-setting-up-and-using-rix-on-linux-and-windows.html#using-the-determinate-systems-installer)
+(ignore the ones about installing Nix).
